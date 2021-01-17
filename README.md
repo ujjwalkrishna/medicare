@@ -1,4 +1,11 @@
 # Medicare
+
+Video Demonstration Link : 
+https://drive.google.com/file/d/139jDzfi5m10p6pKsDoXzbFv75UYfg5kY/view?usp=sharing
+
+ppt Link : 
+https://drive.google.com/file/d/1atVoKm5eZBNHQKk4t-fv6Bq9A2cgYKcK/view?usp=sharing
+
 ## About Our Website
 Majority of hospitals in rural areas and towns or even in some cities don't have their own website and do not provide with services like online appointment booking.
 
@@ -14,3 +21,11 @@ We aim to work with as many hospitals possible and benefit as many users as we c
 
 Our team is keen towards providing users with their best experience.
 
+## Install
+npm i
+
+## Build With
+* Nodejs (Express).
+* MongoDB.
+* ejs.
+* HTML, CSS, JS
