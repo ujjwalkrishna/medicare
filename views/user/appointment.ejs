@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Appointments</title>
+    <style>
+        .heading {
+            font-size: 70px;
+            background-color: #0077b6;
+            padding: 1%;
+            text-align: center;
+            color: white;
+            width: 84%;
+            margin: 0 auto;
+        }
+
+        .container {
+            margin-top: 2%;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
+        .sub-heading {
+            padding-top: 1.5%;
+            padding-bottom: 0.5%;
+            font-size: 30px;
+            background-color: #0077b6;
+            color: white;
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        .table {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mx-auto flex items-center justify-between">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+                aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item ml-6">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <% if(!user){ %>
+                        <li class="ml-6 nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="ml-6 nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                        <% }else{ %>
+                            <li class="ml-6 nav-item">
+                                <form action="/logout" method="POST" id="logout"></form>
+                                <a class="nav-link" onclick="document.getElementById('logout').submit()"
+                                    href="#">Logout</a>
+                                </form>
+                            </li>
+                            <li class="ml-6 nav-item">
+                                <a class="nav-link" href="/userAppointments">My Appointments</a>
+                            </li>
+                            <% } %>
+                                <li class="nav-item ml-6">
+                                    <a class="nav-link" href="#">About Us</a>
+                                </li>
+                                <li class="nav-item ml-6">
+                                    <a class="nav-link" href="#">Hospitals</a>
+                                </li>
+                                <li class="nav-item ml-6">
+                                    <a class="nav-link" href="#">Covid Section</a>
+                                </li>
+                                <li class="nav-item ml-6">
+                                    <a class="nav-link" href="#">Contact Us</a>
+                                </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="heading">
+        <h1><b>Appointments</b></h1>
+    </div>
+
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
+                    aria-controls="home" aria-selected="true">Confirmed Appointments</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Requested Appointments</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab"
+                    aria-controls="contact" aria-selected="false">Completed Appointments</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="container">
+
+                    <div class="sub-heading">
+                        <p>Confirmed Appointments</p>
+                    </div>
+
+                    <table class="table table-striped" style="margin-top: 2%;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Appointment ID</th>
+                                <th scope="col">Patient Name</th>
+                                <th scope="col">Hospital</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Fee</th>
+                                <th scope="col">Appt Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% appoints.forEach((appoint)=>{ %>
+                                <% if(appoint.status==1){ %>
+                                    <tr>
+                                        <th scope="row">
+                                            <%= appoint._id %>
+                                        </th>
+                                        <td>
+                                            <%= appoint.patientName %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.hospital %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.department %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.price %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.timeL %> - <%= appoint.timeL %>
+                                        </td>
+                                        <td>Confirmed</td>
+                                        <form action="/cancelPAppDone" method="POST">
+                                            <input type="hidden" name="hos" value="<%= appoint.hospital %>">
+                                            <input type="hidden" name="id" value="<%= appoint._id %>">
+                                            <td><button type="submit" class="btn btn-outline-danger">Cancel</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    <% } %>
+                                        <% }); %>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="container">
+                    <div class="sub-heading">
+                        <p>Requested Appointments</p>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Appointment ID</th>
+                                <th scope="col">Patient Name</th>
+                                <th scope="col">Hospital</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Fee</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% appoints.forEach((appoint)=>{ %>
+                                <% if(appoint.status==0){ %>
+                                    <tr>
+                                        <th scope="row">
+                                            <%= appoint._id %>
+                                        </th>
+                                        <td>
+                                            <%= appoint.patientName %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.hospital %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.department %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.price %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.choiceDate %>
+                                        </td>
+                                        <td>Pending</td>
+                                        <form action="/cancelPAppDone" method="POST">
+                                            <input type="hidden" name="hos" value="<%= appoint.hospital %>">
+                                            <input type="hidden" name="id" value="<%= appoint._id %>">
+                                            <td><button type="submit" class="btn btn-outline-danger">Cancel</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    <% } %>
+                                        <% }); %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="container">
+                    <div class="sub-heading">
+                        <p>Completed Appointments</p>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Appointment ID</th>
+                                <th scope="col">Patient Name</th>
+                                <th scope="col">Hospital</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Fee</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% appoints.forEach((appoint)=>{ %>
+                                <% if(appoint.status==-1){ %>
+                                    <tr>
+                                        <th scope="row">
+                                            <%= appoint._id %>
+                                        </th>
+                                        <td>
+                                            <%= appoint.patientName %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.hospital %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.department %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.price %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.note %>
+                                        </td>
+                                        <td>
+                                            <%= appoint.choiceDate %>
+                                        </td>
+                                        <td>Completed</td>
+                                    </tr>
+                                    <% } %>
+                                        <% }); %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
